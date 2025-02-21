@@ -1,0 +1,45 @@
+.multi-step-form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.form-step {
+  display: none;
+  animation: fadeIn 0.5s;
+}
+
+.form-step.active {
+  display: block;
+}
+
+.error-message {
+  color: #d32f2f;
+  font-size: 0.875rem;
+  margin-top: 4px;
+}
+
+/* WCAG 2.1 AA Compliance */
+.form-label {
+  color: #000000;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.required-field::after {
+  content: "*";
+  color: #d32f2f;
+}
+
+/* Focus states for accessibility */
+input:focus,
+select:focus,
+button:focus {
+  outline: 2px solid #2196f3;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .form-step {
+    animation: none;
+  }
+}
