@@ -13,6 +13,14 @@ const VALIDATION_RULES = {
       return date <= new Date() && date >= new Date('1960-01-01');
     },
     message: 'Please enter a valid exposure date between 1960 and present'
+  },
+  fullName: {
+    pattern: /^[a-zA-Z\s]+$/,
+    message: "Please enter a valid full name"
+  },
+  email: {
+    pattern: /^[^@\s]+@[^@\s]+\.[^@\s]+$/,
+    message: "Please enter a valid email address"
   }
 };
 

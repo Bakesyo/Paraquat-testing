@@ -69,3 +69,28 @@ function getTier(score) {
   if (score >= 60) return 'WARM';
   return 'COLD';
 }
+
+function getRecommendedActions(score, leadData) {
+    const actions = [];
+    
+    if (score >= 80) {
+        actions.push('Immediate follow-up call');
+        actions.push('Priority case review');
+    } else if (score >= 60) {
+        actions.push('Follow-up within 24 hours');
+        actions.push('Request medical records');
+    } else {
+        actions.push('Send additional qualification questions');
+        actions.push('Add to general follow-up list');
+    }
+
+    if (leadData.state === 'IL') {
+        actions.push('Route to MDL team');
+    }
+
+    if (!leadData.diagnosisDate) {
+        actions.push('Request diagnosis documentation');
+    }
+
+    return actions;
+}

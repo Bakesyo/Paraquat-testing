@@ -1,85 +1,614 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Paraquat Lawsuit | Free Case Evaluation</title>
-    <meta name="description" content="Have you been exposed to Paraquat and diagnosed with Parkinson's? You may be entitled to compensation. Get a free case evaluation today.">
-    <!-- Google Analytics -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paraquat Lawsuit Evaluation | Free Case Review</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="form-styles.css">
+    <meta name="description" content="Free Paraquat lawsuit evaluation. Find out if you qualify for compensation due to Parkinson's Disease from Paraquat exposure.">
+    <meta name="robots" content="noindex,nofollow" /> <!-- Comply with bar rules -->
+    <link rel="stylesheet" href="splash.css">
+    <style>
+        /* Add these accessibility-focused styles */
+        .consent-container {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border: 2px solid #2c5282;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .large-checkbox {
+            position: relative;
+            padding-left: 3.5rem;
+            margin: 1.5rem 0;
+            cursor: pointer;
+            font-size: 1.2rem;
+            line-height: 1.5;
+            display: flex;
+            align-items: center;
+        }
+
+        .large-checkbox input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            position: absolute;
+            left: 0;
+            height: 2.5rem;
+            width: 2.5rem;
+            background-color: #fff;
+            border: 3px solid #2c5282;
+            border-radius: 0.5rem;
+        }
+
+        .large-checkbox:hover input ~ .checkmark {
+            background-color: #edf2f7;
+        }
+
+        .large-checkbox input:checked ~ .checkmark {
+            background-color: #2c5282;
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .large-checkbox input:checked ~ .checkmark:after {
+            display: block;
+            left: 0.8rem;
+            top: 0.4rem;
+            width: 0.8rem;
+            height: 1.3rem;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+        }
+
+        /* Update signature pad styles for better touch support */
+        .signature-section {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+        }
+
+        .signature-pad-container {
+            touch-action: none;
+            background: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        #signaturePad {
+            width: 100%;
+            height: 200px;
+            cursor: crosshair;
+        }
+
+        @media (max-width: 768px) {
+            #signaturePad {
+                height: 150px;
+            }
+        }
+
+        .signature-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .signature-button {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+
+        .clear-signature {
+            background-color: #e2e8f0;
+            color: #2d3748;
+        }
+
+        .redo-signature {
+            background-color: #2c5282;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- New Splash Screen -->
+    <div id="splash-screen" class="splash-container">
+        <div class="splash-content">
+            <h1 class="splash-title">Paraquat Exposure Claims</h1>
+            <h2 class="splash-subtitle">Were you diagnosed with Parkinson's Disease after exposure to Paraquat?</h2>
+            <div class="splash-highlights">
+                <div class="highlight-item">
+                    <span class="highlight-number">$600M+</span>
+                    <span class="highlight-text">In Settlements</span>
+                </div>
+                <div class="highlight-item">
+                    <span class="highlight-number">65K+</span>
+                    <span class="highlight-text">Cases Filed</span>
+                </div>
+            </div>
+            <button id="start-evaluation" class="splash-cta">Start Free Evaluation</button>
+        </div>
+    </div>
+
+    <!-- New Agreement Modal -->
+    <div id="agreement-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>Before We Begin</h2>
+            <div class="agreement-text">
+                <p>By proceeding, you acknowledge and agree that:</p>
+                <ul>
+                    <li>This is an advertisement for legal services</li>
+                    <li>Submitting information does not create an attorney-client relationship</li>
+                    <li>Your information will be kept confidential as permitted by law</li>
+                    <li>You may be contacted by phone, email, or text message</li>
+                    <li>Prior results do not guarantee similar outcomes</li>
+                </ul>
+                <div class="consent-container">
+                    <label class="large-checkbox">
+                        I have read and agree to these terms
+                        <input type="checkbox" id="consent" required>
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+            <button id="agree-continue" class="modal-cta" disabled>Continue</button>
+        </div>
+    </div>
+
+    <!-- Existing container with form - initially hidden -->
+    <div id="main-content" class="container" style="display: none;">
+        <header>
+            <h1>Paraquat Lawsuit Evaluation</h1>
+            <div class="legal-notice">
+                <p>Attorney Advertising. Prior results do not guarantee similar outcomes.</p>
+                <p>This communication is not legal advice. Submitting information does not create an attorney-client relationship.</p>
+            </div>
+        </header>
+
+        <form id="lead-form" class="multi-step-form">
+            <div class="progress-bar">
+                <div class="progress-step active">Basic Info</div>
+                <div class="progress-step">Exposure</div>
+                <div class="progress-step">Medical</div>
+                <div class="progress-step">Review</div>
+            </div>
+            <div class="form-step active" id="step1">
+                <h2>Basic Information</h2>
+                <div class="form-group">
+                    <label for="fullName" class="required-field">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" required>
+                    <div class="error-message" id="fullName-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="phone" class="required-field">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required>
+                    <div class="error-message" id="phone-error"></div>
+                </div>
+                <button type="button" class="next-step">Continue</button>
+            </div>
+
+            <div class="form-step" id="step2">
+                <h2>Exposure Details</h2>
+                <div class="form-group">
+                    <label for="exposureType" class="required-field">How were you exposed to Paraquat?</label>
+                    <select id="exposureType" name="exposureType" required>
+                        <option value="">Select one...</option>
+                        <option value="Licensed Applicator">Licensed Applicator</option>
+                        <option value="Farmer/Agricultural Worker">Farmer/Agricultural Worker</option>
+                        <option value="Mixed/Loaded Chemical">Mixed/Loaded Chemical</option>
+                        <option value="Worked/Lived Near Sprayed Areas">Worked/Lived Near Sprayed Areas</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="exposureDuration" class="required-field">Duration of Exposure</label>
+                    <select id="exposureDuration" name="exposureDuration" required>
+                        <option value="">Select one...</option>
+                        <option value="More than 10 years">More than 10 years</option>
+                        <option value="5-10 years">5-10 years</option>
+                        <option value="1-5 years">1-5 years</option>
+                        <option value="Less than 1 year">Less than 1 year</option>
+                    </select>
+                </div>
+                <button type="button" class="prev-step">Back</button>
+                <button type="button" class="next-step">Continue</button>
+            </div>
+
+            <div class="form-step" id="step3">
+                <h2>Medical Information</h2>
+                <div class="form-group">
+                    <label for="parkinsonsStatus" class="required-field">Have you been diagnosed with Parkinson's Disease?</label>
+                    <select id="parkinsonsStatus" name="parkinsonsStatus" required>
+                        <option value="">Select one...</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                <div class="form-group diagnosis-date">
+                    <label for="diagnosisDate">When were you diagnosed?</label>
+                    <input type="date" id="diagnosisDate" name="diagnosisDate">
+                </div>
+                <button type="button" class="prev-step">Back</button>
+                <button type="button" class="next-step">Continue</button>
+            </div>
+
+            <div class="form-step" id="step4">
+                <h2>Review Your Information</h2>
+                <div class="review-section">
+                    <div class="review-group">
+                        <h3>Basic Information <button type="button" class="edit-section" data-step="1">Edit</button></h3>
+                        <div class="review-item">
+                            <label>Full Name:</label>
+                            <span id="review-fullName"></span>
+                        </div>
+                        <div class="review-item">
+                            <label>Phone:</label>
+                            <span id="review-phone"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="review-group">
+                        <h3>Exposure Details <button type="button" class="edit-section" data-step="2">Edit</button></h3>
+                        <div class="review-item">
+                            <label>Type of Exposure:</label>
+                            <span id="review-exposureType"></span>
+                        </div>
+                        <div class="review-item">
+                            <label>Duration:</label>
+                            <span id="review-exposureDuration"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="review-group">
+                        <h3>Medical Information <button type="button" class="edit-section" data-step="3">Edit</button></h3>
+                        <div class="review-item">
+                            <label>Parkinson's Diagnosis:</label>
+                            <span id="review-parkinsonsStatus"></span>
+                        </div>
+                        <div class="review-item">
+                            <label>Date of Diagnosis:</label>
+                            <span id="review-diagnosisDate"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="signature-section">
+                    <h3>Electronic Signature</h3>
+                    <p class="signature-instructions">Please sign using your finger or mouse:</p>
+                    <div class="signature-pad-container">
+                        <canvas id="signaturePad"></canvas>
+                    </div>
+                    <div class="signature-buttons">
+                        <button type="button" class="signature-button clear-signature" id="clearSignature">Clear</button>
+                        <button type="button" class="signature-button redo-signature" id="redoSignature">Redo</button>
+                    </div>
+                    <input type="hidden" name="signature" id="signature-data">
+                </div>
+
+                <button type="button" class="prev-step">Back</button>
+                <button type="submit" id="final-submit">Submit Evaluation</button>
+            </div>
+        </form>
+
+        <div class="compliance-footer">
+            <p>This is an advertisement for legal services. This website is not intended to provide medical advice.</p>
+            <p>By submitting this form, you consent to be contacted by our attorneys and legal team about your potential case.</p>
+            <p>Your information is confidential to the extent permitted by law.</p>
+            <p><a href="/privacy-policy">Privacy Policy</a> | <a href="/terms">Terms of Use</a></p>
+        </div>
+    </div>
+
+    <!-- Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=GA_ID"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+        function gtag() {
+            dataLayer.push(arguments);
+        }
         gtag('js', new Date());
         gtag('config', 'GA_ID');
     </script>
-    <script>
-        // A/B Testing Configuration
-        const variants = {
-            'A': { heading: 'Get Compensation for Paraquat Exposure' },
-            'B': { heading: 'Diagnosed with Parkinson's? Get Help Now' }
-        };
-        
-        function initializeABTest() {
-            const variant = Math.random() < 0.5 ? 'A' : 'B';
-            document.querySelector('.hero h3').textContent = variants[variant].heading;
-            trackVariant(variant);
-        }
-    </script>
-    <meta name="robots" content="noindex,nofollow" /> <!-- Comply with bar rules -->
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header>
-        <h1>Paraquat Lawsuit Claims Center</h1>
-        <h2>Free Case Evaluation for Paraquat Exposure Victims</h2>
-    </header>
+
+    <!-- Form Scripts -->
+    <script src="validation-rules.js"></script>
+    <script src="scoring-criteria.js"></script>
+    <script src="error-tracking.js"></script>
+    <script src="sheets-config.js"></script>
+    <script src="email-templates.js"></script>
+    <script src="analytics-config.js"></script>
+    <script src="splash.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+    <script src="form-persistence.js"></script>
+    <script src="error-recovery.js"></script>
+    <script src="api-mock.js"></script>
+    <script src="signature-handler.js"></script>
     
-    <main>
-        <section class="hero">
-            <h3>Have You Been Diagnosed with Parkinson's Disease After Paraquat Exposure?</h3>
-            <p>You may be entitled to significant compensation. Time is limited - act now.</p>
-            <!-- Form embed will go here -->
-            <div id="lead-form" class="multi-step-form">
-                <div class="form-step" data-step="1">
-                    <!-- Qualification questions -->
-                </div>
-                <div class="form-step" data-step="2">
-                    <!-- Contact information -->
-                </div>
-                <div class="form-step" data-step="3">
-                    <!-- Additional details -->
-                </div>
-            </div>
-            <p class="privacy-notice">
-                By submitting this form, you agree to our Privacy Policy and consent to being contacted about your case. 
-                Submitting this form does not create an attorney-client relationship. All information will be kept 
-                confidential to the extent permitted by law.
-            </p>
-        </section>
-
-        <section class="qualifications">
-            <h3>You May Qualify If You:</h3>
-            <ul>
-                <li>Were exposed to Paraquat through farming, landscaping, or living near treated fields</li>
-                <li>Have been diagnosed with Parkinson's disease</li>
-                <li>Had exposure before your diagnosis</li>
-            </ul>
-        </section>
-    </main>
-
-    <div class="legal-disclaimers">
-        <p>ATTORNEY ADVERTISING. Prior results do not guarantee similar outcomes.</p>
-        <p>This is an advertisement for legal services. This website is not intended to provide medical advice.</p>
-        <p>The choice of a lawyer is an important decision and should not be based solely upon advertisements.</p>
-        <p>By submitting this form, you agree to receive autodialed and/or pre-recorded calls/texts at the phone number provided. Consent is not a condition of purchase.</p>
-        <p>Submitting this form does not establish an attorney-client relationship. Communications made before establishing 
-        a formal relationship with a law firm may not be privileged.</p>
-    </div>
-
-    <footer>
-        <p>Disclaimer: This communication is not legal advice. Results may vary.</p>
-    </footer>
     <script>
-        initializeABTest();
+        let signaturePad; // Declare globally
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing form...');
+            
+            // Initialize signature pad with proper sizing
+            initializeSignaturePad();
+            
+            setupFormNavigation();
+            setupReviewSection();
+            
+            // Debug logging
+            console.log('Form initialized');
+        });
+
+        function initializeSignaturePad() {
+            console.log('Initializing signature pad...');
+            const canvas = document.getElementById('signaturePad');
+            if (!canvas) {
+                console.error('Signature pad canvas not found!');
+                return;
+            }
+
+            // Set canvas size based on container
+            const container = canvas.parentElement;
+            canvas.width = container.offsetWidth;
+            canvas.height = 200; // Fixed height
+
+            signaturePad = new SignaturePad(canvas, {
+                backgroundColor: 'rgb(255, 255, 255)',
+                penColor: 'rgb(0, 0, 0)'
+            });
+
+            // Clear signature button
+            const clearButton = document.getElementById('clearSignature');
+            if (clearButton) {
+                clearButton.addEventListener('click', () => {
+                    signaturePad.clear();
+                    console.log('Signature cleared');
+                });
+            }
+        }
+
+        function setupReviewSection() {
+            console.log('Setting up review section...');
+            const editButtons = document.querySelectorAll('.edit-section');
+            
+            editButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const stepNumber = this.dataset.step;
+                    console.log('Editing step:', stepNumber);
+                    goToStep(stepNumber);
+                });
+            });
+        }
+
+        function goToStep(stepNumber) {
+            const targetStep = document.getElementById('step' + stepNumber);
+            if (!targetStep) {
+                console.error('Target step not found:', stepNumber);
+                return;
+            }
+
+            document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+            targetStep.classList.add('active');
+            updateProgressBar();
+            console.log('Navigated to step:', stepNumber);
+        }
+
+        function updateReviewSection() {
+            console.log('Updating review section...');
+            const fields = ['fullName', 'phone', 'exposureType', 'exposureDuration', 'parkinsonsStatus', 'diagnosisDate'];
+            
+            fields.forEach(field => {
+                const input = document.getElementById(field);
+                const reviewSpan = document.getElementById('review-' + field);
+                
+                if (!input || !reviewSpan) {
+                    console.error('Missing element for field:', field);
+                    return;
+                }
+
+                const value = input.value;
+                reviewSpan.textContent = value || 'Not provided';
+                console.log(`Updated ${field}:`, value);
+            });
+        }
+
+        function setupFormNavigation() {
+            const nextButtons = document.querySelectorAll('.next-step');
+            const prevButtons = document.querySelectorAll('.prev-step');
+            const form = document.getElementById('lead-form');
+            
+            nextButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const currentStep = this.closest('.form-step');
+                    const nextStep = currentStep.nextElementSibling;
+                    
+                    // Store current values even if incomplete
+                    const inputs = currentStep.querySelectorAll('input, select');
+                    inputs.forEach(input => {
+                        localStorage.setItem(input.id, input.value);
+                    });
+
+                    // Always allow progression
+                    if (nextStep && nextStep.classList.contains('form-step')) {
+                        currentStep.classList.remove('active');
+                        nextStep.classList.add('active');
+                        updateProgressBar();
+                    }
+
+                    if (nextStep && nextStep.id === 'step4') {
+                        updateReviewSection();
+                    }
+                });
+            });
+
+            prevButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const currentStep = this.closest('.form-step');
+                    const prevStep = currentStep.previousElementSibling;
+                    if (prevStep && prevStep.classList.contains('form-step')) {
+                        currentStep.classList.remove('active');
+                        prevStep.classList.add('active');
+                        updateProgressBar();
+                    }
+                });
+            });
+
+            // Move validation to final submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const requiredFields = form.querySelectorAll('[required]');
+                let isValid = true;
+                let firstInvalidField = null;
+
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        if (!firstInvalidField) {
+                            firstInvalidField = field;
+                        }
+                        field.classList.add('error');
+                    } else {
+                        field.classList.remove('error');
+                    }
+                });
+
+                if (isValid) {
+                    // Process form submission
+                    submitForm();
+                } else {
+                    alert('Please complete all required fields before submitting.');
+                    if (firstInvalidField) {
+                        const step = firstInvalidField.closest('.form-step');
+                        document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+                        step.classList.add('active');
+                        updateProgressBar();
+                        firstInvalidField.focus();
+                    }
+                }
+            });
+        }
+
+        async function submitForm() {
+            const form = document.getElementById('lead-form');
+            const submitButton = form.querySelector('button[type="submit"]');
+            
+            try {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Submitting...';
+
+                const formData = new FormData(form);
+                formData.append('signature', signaturePad.toDataURL());
+                
+                // Use mock API for testing
+                const response = await mockApiEndpoint(Object.fromEntries(formData));
+
+                if (response.success) {
+                    showSuccessMessage(response);
+                    clearFormState(); // Clear saved form data
+                    trackFormSubmission(response.leadId); // Track analytics
+                } else {
+                    throw new Error(response.message || 'Submission failed');
+                }
+            } catch (error) {
+                console.error('Submission error:', error);
+                showErrorMessage(error);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Submit Evaluation';
+            }
+        }
+
+        function showSuccessMessage(response) {
+            const mainContent = document.getElementById('main-content');
+            mainContent.innerHTML = `
+                <div class="success-message">
+                    <h2>Thank You for Submitting Your Information</h2>
+                    <p>Your case number is: ${response.leadId}</p>
+                    <p>One of our legal representatives will contact you shortly to discuss your case.</p>
+                    <p>If you need immediate assistance, please call: <a href="tel:1-800-XXX-XXXX">1-800-XXX-XXXX</a></p>
+                </div>
+            `;
+            window.scrollTo(0, 0);
+        }
+
+        function showErrorMessage(error) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-banner';
+            errorDiv.innerHTML = `
+                <p>There was an error submitting your form. Please try again or contact us directly.</p>
+                <p>Error: ${error.message}</p>
+            `;
+            
+            const form = document.getElementById('lead-form');
+            form.insertBefore(errorDiv, form.firstChild);
+            
+            setTimeout(() => {
+                errorDiv.remove();
+            }, 5000);
+        }
+
+        function trackFormSubmission(leadId) {
+            // Analytics tracking
+            gtag('event', 'form_submit', {
+                'event_category': 'Lead',
+                'event_label': leadId
+            });
+        }
+
+        function updateProgressBar() {
+            const steps = document.querySelectorAll('.form-step');
+            const progressSteps = document.querySelectorAll('.progress-step');
+            
+            steps.forEach((step, index) => {
+                if (step.classList.contains('active')) {
+                    progressSteps.forEach((prog, i) => {
+                        if (i <= index) {
+                            prog.classList.add('active');
+                        } else {
+                            prog.classList.remove('active');
+                        }
+                    });
+                }
+            });
+        }
+
+        function getUtmSource() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('utm_source') || 'direct';
+        }
+
+        function updateReviewSection() {
+            console.log('Updating review section...');
+            const fields = ['fullName', 'phone', 'exposureType', 'exposureDuration', 'parkinsonsStatus', 'diagnosisDate'];
+            
+            fields.forEach(field => {
+                const input = document.getElementById(field);
+                const reviewSpan = document.getElementById('review-' + field);
+                
+                if (!input || !reviewSpan) {
+                    console.error('Missing element for field:', field);
+                    return;
+                }
+
+                const value = input.value;
+                reviewSpan.textContent = value || 'Not provided';
+                console.log(`Updated ${field}:`, value);
+            });
+        }
     </script>
 </body>
 </html>
+
