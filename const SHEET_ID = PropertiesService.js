@@ -1,5 +1,5 @@
-const SHEET_ID = '1UUbJylU2f84to7tYUzdAAephWcfYjrIJLiTbknUz7iY'; // Use your actual Sheet ID
-const SHEET_NAME = 'Sheet1'; // Or the name of the sheet you want to write to
+const SHEET_ID = 'AKfycbyZ3XCq7ohMgJ4xqu7DnVrA1Bsaevq8Ke9_X80FLFnrzu5afAv41FJ6wIrM6hy9clRz'; // Use your actual Sheet ID
+const SHEET_NAME = 'Paraquat Leads'; // Or the name of the sheet you want to write to
 
 function addLeadToSheet(sheet, leadData) {
   const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
@@ -45,8 +45,8 @@ function logLeadActivity(rowId, activity) {
 }
 
 function trackConversion(leadData) {
-  // Tracking logic here
-  Logger.log(`Tracking conversion for ${leadData.email}`); // Example logging
+  // Email and Analytics conversion tracking removed.
+  Logger.log(`Conversion tracking removed for ${leadData.email}`);
 }
 
 function isQualifiedLead(leadData) {
@@ -55,109 +55,71 @@ function isQualifiedLead(leadData) {
 }
 
 function postToAnalytics(analyticsData) {
-  // Analytics posting logic here
-  Logger.log(`Posting to analytics: ${JSON.stringify(analyticsData)}`); // Example logging
+  // Analytics posting removed.
+  Logger.log(`postToAnalytics removed: ${JSON.stringify(analyticsData)}`);
 }
 
 function getActiveTestVariant() {
-  // A/B test variant retrieval logic here
-  return 'A'; // Example default variant
+  // Example: Retrieve variant from PropertiesService (can be set elsewhere)
+  const variant = PropertiesService.getScriptProperties().getProperty('ab_variant') || 'A';
+  return variant;
 }
 
 function getExposureDate(exposureYears) {
-  // Exposure date calculation logic here
-  return new Date(2010, 0, 1); // Example date
+  try {
+    // Example: Calculate exposure date based on years ago
+    const currentYear = new Date().getFullYear();
+    const exposureYear = currentYear - parseInt(exposureYears, 10);
+    return new Date(exposureYear, 0, 1); // January 1st of that year
+  } catch (error) {
+    trackError(error, 'getExposureDate', exposureYears);
+    return new Date(2010, 0, 1); // Default date on error
+  }
 }
 
 function processNewLead(formData) {
   try {
-    // Verify US residency - Assuming this is captured in the form
-    if (formData.usResident !== 'Yes') {
-      return {
-        success: false,
-        error: 'Only US residents are eligible at this time'
-      };
-    }
+    // Removed disqualifying checks (US residency, SOL, etc.)
+    // Instead, proceed with processing every lead
 
-    // Add TCPA compliance timestamp
+    // Optionally sanitize or transform formData as needed.
     const leadData = {
       ...formData,
       tcpaConsent: {
         timestamp: new Date().toISOString(),
-        // You'll need to find a way to capture IP and userAgent.  This is trickier in a web app.
-        // Consider using a 3rd party service or server-side code to get this info.
         ip: 'N/A',
         userAgent: 'N/A'
       }
     };
 
-    // Check statute of limitations
-    const state = leadData.state;
-    const diagnosisDate = new Date(leadData.exposureDate); // Assuming exposure date is relevant
-    if (!isWithinStatuteOfLimitations(state, diagnosisDate)) {
-      //logLeadActivity(rowId, 'SOL Issue'); // Need to create row first
-      return {
-        success: false,
-        error: 'Claim may be outside statute of limitations'
-      };
-    }
-
-    // Add lead scoring
-    const scoringResult = scoreLead(leadData);
-    leadData.score = scoringResult.score;
-    leadData.tier = scoringResult.tier;
-
-    // Add UTM tracking - Assuming these are passed in the form
-    leadData.utm = {
-      source: formData.utm_source || 'N/A',
-      medium: formData.utm_medium || 'N/A',
-      campaign: formData.utm_campaign || 'N/A'
-    };
-
-    // Add A/B test variant - Assuming this is tracked client-side and passed
-    leadData.variant = formData.ab_variant || 'N/A';
-
+    // Proceed to record the lead in the sheet
     const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(SHEET_NAME);
     const rowId = addLeadToSheet(sheet, leadData);
-    
     logLeadActivity(rowId, 'Lead created');
-    
-    trackConversion(leadData);
 
-    if (isQualifiedLead(leadData)) {
-      sendPriorityNotification(leadData);
-      logLeadActivity(rowId, 'Priority notification sent');
-    }
+    trackConversion(leadData);
+    
+    // Always send notifications now that all leads are treated as qualifying.
+    sendPriorityNotification(leadData);
+    logLeadActivity(rowId, 'Priority notification removed');
 
     sendAutoResponse(leadData);
     return { success: true, leadId: rowId };
   } catch (error) {
     trackError(error, 'processNewLead', formData);
-    console.error("Error in processNewLead:", error); // Add this line
+    console.error("Error in processNewLead:", error);
     return { success: false, error: 'An unexpected error occurred. Our team has been notified.' };
   }
 }
 
 function sendPriorityNotification(leadData) {
-  MailApp.sendEmail({
-    to: 'intake@lawfirm.com',
-    subject: 'High-Priority Paraquat Lead',
-    body: `New qualified lead:\nName: ${leadData.name}\nPhone: ${leadData.phone}\nEmail: ${leadData.email}`
-  });
+  // Priority notification removed.
+  Logger.log(`Priority notification removed for ${leadData.email}`);
 }
 
 function sendAutoResponse(leadData) {
-  const template = getEmailTemplate('auto-response');
-  const body = template
-    .replace('{{name}}', leadData.name)
-    .replace('{{unsubscribeLink}}', generateUnsubscribeLink(leadData.email));
-    
-  MailApp.sendEmail({
-    to: leadData.email,
-    subject: 'Your Paraquat Case Evaluation Request',
-    body: body,
-    noReply: true
-  });
+  // Auto-response removed.
+  Logger.log(`Auto-response removed for ${leadData.email}`);
 }
 
 function isWithinStatuteOfLimitations(state, diagnosisDate) {
@@ -263,6 +225,37 @@ function setupErrorTracking() {
       'IP Address',
       'Browser'
     ]);
+  }
+}
+
+function trackError(error, functionName, context) {
+  try {
+    const ss = SpreadsheetApp.openById(SHEET_ID);
+    const errorSheet = ss.getSheetByName('Errors');
+    
+    let userData = 'N/A';
+    try {
+      userData = Session.getActiveUser().getEmail();
+    } catch (e) {
+      userData = 'User email not available';
+    }
+    
+    // Attempt to get IP address and browser info (more complex in GAS)
+    const ipAddress = 'N/A';
+    const browser = 'N/A';
+    
+    errorSheet.appendRow([
+      new Date().toISOString(),
+      error.message,
+      error.stack || 'No stack trace',
+      functionName,
+      JSON.stringify(context),
+      ipAddress,
+      browser,
+      userData // Include user data in error log
+    ]);
+  } catch (e) {
+    Logger.log('Error logging failed: ' + e);
   }
 }
 

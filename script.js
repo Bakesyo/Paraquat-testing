@@ -48,7 +48,7 @@ function validateField(field, value) {
 }
 
 function updateFieldValidation(field, result) {
-    const errorElementId = `${field.id}-error`;
+    const errorElementId = `${field.name}-error`; // Use field.name instead of field.id
     const errorElement = document.getElementById(errorElementId);
 
     if (errorElement) {
@@ -124,6 +124,7 @@ document.getElementById('phone').addEventListener('input', (e) => {
 async function submitFormData(data) {
     const form = document.getElementById('lead-form');
     const submitButton = form.querySelector('button[type="submit"]');
+    const originalButtonText = submitButton.textContent; // Store original text
     
     try {
         // Show loading state
@@ -137,27 +138,28 @@ async function submitFormData(data) {
                 handleError(error, 'form_submission');
                 form.classList.remove('loading');
                 submitButton.disabled = false;
-                submitButton.textContent = 'Submit';
+                submitButton.textContent = originalButtonText; // Restore original text
             })
             .processNewLead(data);
     } catch (error) {
         handleError(error, 'form_submission');
         form.classList.remove('loading');
         submitButton.disabled = false;
-        submitButton.textContent = 'Submit';
+        submitButton.textContent = originalButtonText; // Restore original text
     }
 }
 
 function formSubmitSuccess(response) {
+    const form = document.getElementById('lead-form');
+    const submitButton = form.querySelector('button[type="submit"]');
+    form.classList.remove('loading');
+    submitButton.disabled = false;
+    submitButton.textContent = 'Submit'; // Ensure button is reset
+
     if (response.success) {
         window.location.href = 'thank-you.html';
     } else {
         alert(`Form submission failed: ${response.error}`);
-        const form = document.getElementById('lead-form');
-        const submitButton = form.querySelector('button[type="submit"]');
-        form.classList.remove('loading');
-        submitButton.disabled = false;
-        submitButton.textContent = 'Submit';
     }
 }
 
@@ -165,3 +167,113 @@ function formSubmitError(error) {
     alert('An error occurred while submitting the form.');
     console.error("Error submitting form:", error);
 }
+
+function addLeadToSheet(sheet, leadData) {
+  // ...existing code...
+}
+
+function validateAndSanitizeData(formResponse) {
+  // ...existing code...
+}
+
+function getEmailTemplate(templateName) {
+  // ...existing code...
+}
+
+function generateUnsubscribeLink(email) {
+  // ...existing code...
+}
+
+function logLeadActivity(rowId, activity) {
+  // ...existing code...
+}
+
+function trackConversion(leadData) {
+  // ...existing code...
+}
+
+function isQualifiedLead(leadData) {
+  // ...existing code...
+}
+
+function postToAnalytics(analyticsData) {
+  // ...existing code...
+}
+
+function getActiveTestVariant() {
+  // ...existing code...
+}
+
+function getExposureDate(exposureYears) {
+  // ...existing code...
+}
+
+function processNewLead(formData) {
+  // ...existing code...
+    const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(SHEET_NAME);
+    const rowId = addLeadToSheet(sheet, leadData);
+    
+    logLeadActivity(rowId, 'Lead created');
+    
+    trackConversion(leadData);
+
+    if (isQualifiedLead(leadData)) {
+      sendPriorityNotification(leadData);
+      logLeadActivity(rowId, 'Priority notification sent');
+    }
+
+    sendAutoResponse(leadData);
+    return { success: true, leadId: rowId };
+  } catch (error) {
+    trackError(error, 'processNewLead', formData);
+    console.error("Error in processNewLead:", error); // Add this line
+    return { success: false, error: 'An unexpected error occurred. Our team has been notified.' };
+  }
+}
+
+function sendPriorityNotification(leadData) {
+  // ...existing code...
+}
+
+function sendAutoResponse(leadData) {
+  // ...existing code...
+}
+
+function isWithinStatuteOfLimitations(state, diagnosisDate) {
+  // ...existing code...
+}
+
+function scoreLead(leadData) {
+  // ...existing code...
+}
+
+function setupErrorTracking() {
+  // ...existing code...
+}
+
+function trackError(error, functionName, context) {
+  try {
+    const ss = SpreadsheetApp.openById(SHEET_ID);
+    const errorSheet = ss.getSheetByName('Errors');
+    
+    const userData = Session.getActiveUser().getEmail();
+    
+    // Attempt to get IP address and browser info (more complex in GAS)
+    const ipAddress = 'N/A';
+    const browser = 'N/A';
+    
+    errorSheet.appendRow([
+      new Date().toISOString(),
+      error.message,
+      error.stack || 'No stack trace',
+      functionName,
+      JSON.stringify(context),
+      ipAddress,
+      browser
+    ]);
+  } catch (e) {
+    Logger.log('Error logging failed: ' + e);
+  }
+}
+
+setupErrorTracking();
