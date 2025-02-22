@@ -5,11 +5,14 @@ function showStep(step) {
     document.querySelector(`.form-step[data-step="${step}"]`).classList.add('active');
 }
 
+// Modified nextStep function to alert when validation fails
 function nextStep() {
-    if (validateStep(currentStep)) {
-        currentStep++;
-        showStep(currentStep);
+    if (!validateStep(currentStep)) {
+        alert("Please complete all required fields before continuing.");
+        return;
     }
+    currentStep++;
+    showStep(currentStep);
 }
 
 function prevStep() {
