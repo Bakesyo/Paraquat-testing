@@ -18,14 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Splash screen button
     startButton.addEventListener('click', () => {
-        splashScreen.style.opacity = '0';
-        setTimeout(() => {
-            splashScreen.style.display = 'none';
-            agreementModal.style.display = 'flex';
-            setTimeout(() => {
-                agreementModal.style.opacity = '1';
-            }, 50);
-        }, 300);
+        splashScreen.style.display = 'none';
+        agreementModal.style.display = 'flex';
     });
 
     // Agreement checkbox
@@ -41,14 +35,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Continue button
     continueButton.addEventListener('click', () => {
         if (consentCheckbox.checked) {
-            agreementModal.style.opacity = '0';
+            agreementModal.style.display = 'none';
+            mainContent.style.display = 'block';
             setTimeout(() => {
-                agreementModal.style.display = 'none';
-                mainContent.style.display = 'block';
-                setTimeout(() => {
-                    mainContent.style.opacity = '1';
-                }, 50);
-            }, 300);
+                mainContent.style.opacity = '1';
+            }, 50);
         }
     });
 });
