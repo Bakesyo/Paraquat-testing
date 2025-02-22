@@ -164,6 +164,7 @@
                         <span class="checkmark"></span>
                     </label>
                 </div>
+                <a href="/terms-and-conditions" target="_blank">Learn More</a> <!-- Add this line -->
             </div>
             <button id="agree-continue" class="modal-cta" disabled>Continue</button>
         </div>
@@ -285,6 +286,8 @@
                     </div>
                 </div>
 
+                <button type="button" onclick="window.print()">Print Review</button> <!-- Add this line -->
+
                 <div class="signature-section">
                     <h3>Electronic Signature</h3>
                     <p class="signature-instructions">Please sign using your finger or mouse:</p>
@@ -335,6 +338,7 @@
     <script src="error-recovery.js"></script>
     <script src="api-mock.js"></script>
     <script src="signature-handler.js"></script>
+    <script src="debug_test.js"></script>
     
     <script>
         let signaturePad; // Declare globally

@@ -8,7 +8,8 @@
             "type": "msedge",
             "request": "launch",
             "name": "Open index.html",
-            "file": "c:\\Users\\codym\\Desktop\\Paraquat\\Paraquat-testing\\index.html"
+            "file": "c:\\Users\\codym\\Desktop\\Paraquat\\Paraquat-testing\\index.html",
+            "sourceMaps": true
         }
     ]
 }

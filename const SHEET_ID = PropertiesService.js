@@ -133,6 +133,7 @@ function processNewLead(formData) {
     return { success: true, leadId: rowId };
   } catch (error) {
     trackError(error, 'processNewLead', formData);
+    console.error("Error in processNewLead:", error); // Add this line
     return { success: false, error: 'An unexpected error occurred. Our team has been notified.' };
   }
 }
